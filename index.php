@@ -103,8 +103,8 @@ include "koneksi.php";
     <h1 class="fw-bold display-4 pb-3">article</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
       <?php
-      $sql = "SELECT * FROM article ORDER BY tanggal DESC";
-      $hasil = $conn->query($sql); 
+       $sql_article = "SELECT * FROM article ORDER BY tanggal DESC";
+       $hasil = $conn->query($sql_article); 
 
       while($row = $hasil->fetch_assoc()){
       ?>
@@ -131,48 +131,46 @@ include "koneksi.php";
   </div>
 </section>
 <!-- article end -->
-    <!-- gallery begin -->
-    <section id="gallery" class="text-center p-5 bg-danger-subtle">
-      <div class="container">
-        <h1 class="fw-bold display-4 pb-3">Gallery</h1>
-        <div id="carouselExample" class="carousel slide">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="img/Bunga di gunung Merbabu.jpeg" class="d-block w-100" alt="..." />
+  
+     <!-- gallery begin -->
+     <section id="gallery" class="text-center p-5 bg-danger-subtle">
+      <h1 class="fw-bold display-4 pb-3">Gallery</h1>
+      <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner ratio ratio-16x9">
+          <?php
+          // Koneksi ke database
+          include 'koneksi.php';
+          
+          // Query untuk mengambil data dari tabel gallery
+          $sql_gallery = "SELECT * FROM gallery";
+          $result = $conn->query($sql_gallery); 
+          
+          $first = true; // Variable untuk menandai item pertama
+          
+          while($row = mysqli_fetch_assoc($result)) {
+            // Tambahkan class active untuk item pertama
+            $activeClass = $first ? 'active' : '';
+          ?>
+            <div class="carousel-item <?php echo $activeClass; ?>" data-bs-interval="2000">
+              <img src="img/<?= $row["gambar"]?>" class="d-block w-100">
             </div>
-            <div class="carousel-item">
-              <img src="img/pohon suwanting.jpg" class="d-block w-100" alt="..." />
-            </div>
-            <div class="carousel-item">
-              <img src="img/View Merbabu.jpeg" class="d-block w-100" alt="..." />
-            </div>
-            <div class="carousel-item">
-              <img src="img/View phon suwanting.jpeg" class="d-block w-100" alt="..." />
-            </div>
-          </div>
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+          <?php
+            $first = false; // Set false setelah item pertama
+          }
+          ?>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </section>
     <!-- gallery end -->
-    <!-- schedule begin -->
+<!-- schedule begin -->
     <section id="schedule" class="text-center p-5">
       <div class="container">
         <h1 class="fw-bold display-4 pb-3">Schedule</h1>
